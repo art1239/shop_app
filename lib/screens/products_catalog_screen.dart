@@ -13,12 +13,13 @@ class ProductsCatalog extends StatelessWidget {
           'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
     ),
     Product(
-        id: 'p2',
-        title: 'Trousers',
-        description: 'A nice pair of trousers.',
-        price: 59.99,
-        imageUrl:
-            'https://lh3.googleusercontent.com/proxy/EDClC78_cTzfFJ-qB3k-hEv36h6N5INAa6Ky6x4A33UHok6UPrsUixXwf9EIicmCko3KorZUvc5B7cryEiSvZPcFWCyNE60fiKZDxU82PTaqXccBMM4SzYdijWDrZgriG13p'),
+      id: 'p2',
+      title: 'Trousers',
+      description: 'A nice pair of trousers.',
+      price: 59.99,
+      imageUrl:
+          'https://lh3.googleusercontent.com/proxy/EDClC78_cTzfFJ-qB3k-hEv36h6N5INAa6Ky6x4A33UHok6UPrsUixXwf9EIicmCko3KorZUvc5B7cryEiSvZPcFWCyNE60fiKZDxU82PTaqXccBMM4SzYdijWDrZgriG13p',
+    ),
   ];
   @override
   Widget build(BuildContext context) {
