@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/screens/product_detail_screen.dart';
+import './providers/products.dart';
 import 'package:shop_app/screens/products_catalog_screen.dart';
 
 void main() {
@@ -9,13 +12,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          primarySwatch: Colors.red,
-          accentColor: Colors.grey,
-          fontFamily: 'Lato'),
-      home: ProductsCatalog(),
+    return ChangeNotifierProvider(
+      create: (ctx) => Products(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+            primarySwatch: Colors.red,
+            accentColor: Colors.grey,
+            fontFamily: 'Lato'),
+        home: ProductsCatalog(),
+        routes: {
+          ProductDetail.path: (ctx) => ProductDetail(),
+        },
+      ),
     );
   }
 }
