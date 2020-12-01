@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/Cart.dart';
+import 'package:shop_app/widgets/badge.dart';
 
 import 'package:shop_app/widgets/product_grid.dart';
 
@@ -20,23 +23,34 @@ class _ProductsCatalogState extends State<ProductsCatalog> {
       appBar: AppBar(
         title: Text('Products Catalog'),
         actions: [
-          PopupMenuButton(
-            padding: EdgeInsets.all(10),
-            child: Icon(Icons.more_vert),
-            itemBuilder: (ctx) => [
-              PopupMenuItem(
-                  child: Text('Favorites'), value: MenuOption.FAVORITES),
-              PopupMenuItem(child: Text('All Items'), value: MenuOption.ALL),
-            ],
-            onSelected: (MenuOption option) {
-              setState(() {
-                if (option == MenuOption.FAVORITES) {
-                  isFavorite = true;
-                } else {
-                  isFavorite = false;
-                }
-              });
+          Container(
+            margin: EdgeInsets.only(right: 5),
+            child: PopupMenuButton(
+              child: Icon(Icons.more_vert),
+              itemBuilder: (ctx) => [
+                PopupMenuItem(
+                    child: Text('Favorites'), value: MenuOption.FAVORITES),
+                PopupMenuItem(
+                  child: Text('All Items'),
+                  value: MenuOption.ALL,
+                ),
+              ],
+              onSelected: (MenuOption option) {
+                setState(() {
+                  if (option == MenuOption.FAVORITES) {
+                    isFavorite = true;
+                  } else {
+                    isFavorite = false;
+                  }
+                });
+              },
+            ),
+          ),
+          Consumer<Cart>(
+            builder: (_, value, ch) {
+              return Badge(ch, value.cardItemslength.toString());
             },
+            child: Icon(Icons.shopping_cart),
           ),
         ],
       ),

@@ -2,16 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:shop_app/models/Cart.dart';
 
 class Cart with ChangeNotifier {
-  Map<String, CartItem> _cardItems;
+  Map<String, CartItem> _cartItems = {};
 
-  Map<String, CartItem> get cardItems {
-    return {..._cardItems};
+  Map<String, CartItem> get cartItems {
+    return {..._cartItems};
   }
 
-  void addItemToCar(
-      String prodId, String prodTitle, int quantity, double price) {
-    if (_cardItems.containsKey(prodId)) {
-      _cardItems.update(
+  int get cardItemslength {
+    return _cartItems.length;
+  }
+
+  void addItemToCart(String prodId, String prodTitle, double price) {
+    if (_cartItems.containsKey(prodId)) {
+      _cartItems.update(
         prodId,
         (updatedCartItem) => CartItem(
             id: updatedCartItem.id,
@@ -20,7 +23,7 @@ class Cart with ChangeNotifier {
             quantity: updatedCartItem.quantity + 1),
       );
     } else {
-      _cardItems.putIfAbsent(prodId, () {
+      _cartItems.putIfAbsent(prodId, () {
         return CartItem(
             title: prodTitle,
             quantity: 1,
@@ -28,5 +31,6 @@ class Cart with ChangeNotifier {
             id: DateTime.now().toString());
       });
     }
+    notifyListeners();
   }
 }
