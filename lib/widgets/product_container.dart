@@ -6,19 +6,21 @@ import 'package:shop_app/screens/product_detail_screen.dart';
 class ProductContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final productItem = Provider.of<Product>(context);
+    final productItem = Provider.of<Product>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: GridTile(
         footer: GridTileBar(
           backgroundColor: Colors.black54,
-          leading: IconButton(
-            icon: productItem.isFavorite
-                ? Icon(Icons.favorite)
-                : Icon(Icons.favorite_border),
-            onPressed: () {
-              productItem.toggleFavorite();
-            },
+          leading: Consumer<Product>(
+            builder: (ctx, product, child) => IconButton(
+              icon: productItem.isFavorite
+                  ? Icon(Icons.favorite)
+                  : Icon(Icons.favorite_border),
+              onPressed: () {
+                productItem.toggleFavorite();
+              },
+            ),
           ),
           title: Text(
             productItem.title,
