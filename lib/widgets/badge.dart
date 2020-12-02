@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Badge extends StatelessWidget {
-  @override
   final Widget _child;
   final String value;
   const Badge(this._child, this.value);
+  @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(right: 15),
@@ -33,10 +33,10 @@ class Badge extends StatelessWidget {
                       color: Colors.amber,
                     ),
                     constraints: BoxConstraints(
+                        minHeight: 8,
                         minWidth: 13,
                         maxWidth: 16,
-                        maxHeight: 19,
-                        minHeight: 13),
+                        maxHeight: 16),
                   ),
                 )
               : Container(),

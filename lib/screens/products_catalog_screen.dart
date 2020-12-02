@@ -50,7 +50,12 @@ class _ProductsCatalogState extends State<ProductsCatalog> {
             builder: (_, value, ch) {
               return Badge(ch, value.cardItemslength.toString());
             },
-            child: Icon(Icons.shopping_cart),
+            child: IconButton(
+              icon: Icon(Icons.shopping_cart),
+              onPressed: () {
+                Navigator.pushNamed(context, '/cart');
+              },
+            ),
           ),
         ],
       ),

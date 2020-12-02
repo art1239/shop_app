@@ -12,6 +12,18 @@ class Cart with ChangeNotifier {
     return _cartItems.length;
   }
 
+  CartItem getCartItemAt(int index) {
+    return _cartItems.values.elementAt(index);
+  }
+
+  double get totalPrice {
+    double sum = 0;
+    return _cartItems.values.fold(
+        sum,
+        (accumulator, cartProduct) =>
+            accumulator + cartProduct.price * cartProduct.quantity);
+  }
+
   void addItemToCart(String prodId, String prodTitle, double price) {
     if (_cartItems.containsKey(prodId)) {
       _cartItems.update(
