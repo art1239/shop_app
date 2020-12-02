@@ -16,6 +16,15 @@ class Cart with ChangeNotifier {
     return _cartItems.values.elementAt(index);
   }
 
+  String getProductFromCartAt(int index) {
+    return _cartItems.keys.elementAt(index);
+  }
+
+  void removeItem(String productId) {
+    _cartItems.remove(productId);
+    notifyListeners();
+  }
+
   double get totalPrice {
     double sum = 0;
     return _cartItems.values.fold(

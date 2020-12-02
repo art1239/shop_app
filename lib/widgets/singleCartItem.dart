@@ -1,23 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/models/Cart.dart';
+import 'package:shop_app/providers/Cart.dart';
 
 class SingleCartItem extends StatelessWidget {
   final CartItem cartItem;
-  SingleCartItem(this.cartItem);
+  final String productId;
+  SingleCartItem(this.cartItem, this.productId);
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-      child: ListTile(
-        leading: CircleAvatar(
-          child: FittedBox(
-              child: Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Text(cartItem.price.toString() + '\$'))),
+    return Dismissible(
+      direction: DismissDirection.endToStart,
+      onDismissed: (_) {
+        Provider.of<Cart>(context, listen: false).removeItem(productId);
+      },
+      key: ValueKey(cartItem.id),
+      background: Container(
+        color: Theme.of(context).errorColor,
+        child: Icon(
+          Icons.delete,
+          color: Colors.white,
+          size: 40,
         ),
-        title: Text(cartItem.title),
-        subtitle: Text('Total: ${cartItem.price * cartItem.quantity}\$'),
-        trailing: Text(cartItem.quantity.toString() + ' x'),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 20),
+      ),
+      child: Card(
+        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+        child: ListTile(
+          leading: CircleAvatar(
+            child: FittedBox(
+                child: Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Text(cartItem.price.toString() + '\$'))),
+          ),
+          title: Text(cartItem.title),
+          subtitle: Text('Total: ${cartItem.price * cartItem.quantity}\$'),
+          trailing: Text(cartItem.quantity.toString() + ' x'),
+        ),
       ),
     );
   }
