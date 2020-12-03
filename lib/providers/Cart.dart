@@ -26,9 +26,9 @@ class Cart with ChangeNotifier {
   }
 
   double get totalPrice {
-    double sum = 0;
+    double amount = 0;
     return _cartItems.values.fold(
-        sum,
+        amount,
         (accumulator, cartProduct) =>
             accumulator + cartProduct.price * cartProduct.quantity);
   }

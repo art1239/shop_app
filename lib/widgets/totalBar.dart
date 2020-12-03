@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/Order.dart';
 import 'package:shop_app/providers/Cart.dart';
 
 class TotalBar extends StatelessWidget {
@@ -27,11 +28,17 @@ class TotalBar extends StatelessWidget {
             SizedBox(
               width: 10,
             ),
-            Text(
-              'ORDER NOW',
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
+            RaisedButton(
+              child: Text(
+                'ORDER NOW',
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
+              onPressed: () {
+                Provider.of<Orders>(context, listen: false)
+                    .addOrders(cart.totalPrice, cart.cartItems.values.toList());
+              },
             ),
           ],
         ),

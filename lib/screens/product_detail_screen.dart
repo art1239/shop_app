@@ -15,6 +15,43 @@ class ProductDetail extends StatelessWidget {
       appBar: AppBar(
         title: Text(productDetails.title),
       ),
+      body: Column(
+        children: [
+          Container(
+            height: 300,
+            width: double.infinity,
+            child: Image.network(
+              productDetails.imageUrl,
+              fit: BoxFit.cover,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: Text(
+              '\$ ${productDetails.price}',
+              style: TextStyle(
+                fontSize: 25,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: Text(
+              '${productDetails.description}',
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
