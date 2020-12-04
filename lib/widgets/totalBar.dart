@@ -29,6 +29,7 @@ class TotalBar extends StatelessWidget {
               width: 10,
             ),
             RaisedButton(
+              color: Colors.white,
               child: Text(
                 'ORDER NOW',
                 style: TextStyle(
@@ -38,6 +39,7 @@ class TotalBar extends StatelessWidget {
               onPressed: () {
                 Provider.of<Orders>(context, listen: false)
                     .addOrders(cart.totalPrice, cart.cartItems.values.toList());
+                cart.clearCart();
               },
             ),
           ],
