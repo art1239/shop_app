@@ -8,13 +8,13 @@ class MainDrawer extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 120,
+            height: 100,
             width: double.infinity,
             padding: EdgeInsets.all(20),
             alignment: Alignment.centerLeft,
             color: Theme.of(context).primaryColor,
             child: Text(
-              'Best Recipes',
+              'Online Shop',
               style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 30,
