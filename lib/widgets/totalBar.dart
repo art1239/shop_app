@@ -21,7 +21,7 @@ class TotalBar extends StatelessWidget {
             ),
             Spacer(),
             Chip(
-              label: Text('${cart.totalPrice}\$'),
+              label: Text('${cart.totalPrice.toStringAsFixed(2)}\$'),
               labelStyle: TextStyle(),
               backgroundColor: Theme.of(context).primaryColor,
             ),
