@@ -11,6 +11,31 @@ class SingleCartItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dismissible(
       direction: DismissDirection.endToStart,
+      confirmDismiss: (direction) {
+        return showDialog(
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                title: Text('Are you Sure?'),
+                content: Text(
+                    'You are about to delete the whole item from the card'),
+                actions: [
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop(true);
+                    },
+                    child: Text('Yes'),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop(false);
+                    },
+                    child: Text('No'),
+                  ),
+                ],
+              );
+            });
+      },
       onDismissed: (_) {
         Provider.of<Cart>(context, listen: false).removeItem(productId);
       },
