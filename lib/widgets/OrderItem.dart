@@ -17,6 +17,7 @@ class _OrderItemState extends State<OrderItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 1,
       child: Column(
         children: [
           ListTile(
@@ -36,9 +37,9 @@ class _OrderItemState extends State<OrderItem> {
           ),
           if (expanded)
             Container(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
               height:
-                  min(widget.order.products.length.toDouble() * 20 + 65, 180),
+                  min(widget.order.products.length.toDouble() * 20 + 105, 180),
               child: ListView(
                 children: widget.order.products
                     .map(
@@ -49,7 +50,7 @@ class _OrderItemState extends State<OrderItem> {
                               bottom:
                                   BorderSide(width: 0.3, color: Colors.grey)),
                         ),
-                        margin: EdgeInsets.all(4),
+                        margin: EdgeInsets.all(2),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

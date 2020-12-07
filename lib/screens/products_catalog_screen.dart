@@ -30,7 +30,9 @@ class _ProductsCatalogState extends State<ProductsCatalog> {
               child: Icon(Icons.more_vert),
               itemBuilder: (ctx) => [
                 PopupMenuItem(
-                    child: Text('Favorites'), value: MenuOption.FAVORITES),
+                  child: Text('Favorites'),
+                  value: MenuOption.FAVORITES,
+                ),
                 PopupMenuItem(
                   child: Text('All Items'),
                   value: MenuOption.ALL,

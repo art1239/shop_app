@@ -29,11 +29,33 @@ class ProductContainer extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           trailing: IconButton(
-              icon: Icon(Icons.shopping_cart),
-              onPressed: () {
-                cart.addItemToCart(
-                    productItem.id, productItem.title, productItem.price);
-              }),
+            icon: Icon(Icons.shopping_cart),
+            onPressed: () {
+              cart.addItemToCart(
+                  productItem.id, productItem.title, productItem.price);
+              Scaffold.of(context).hideCurrentSnackBar();
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  duration: Duration(seconds: 2),
+                  action: SnackBarAction(
+                      textColor: Theme.of(context).errorColor,
+                      label: 'Undo',
+                      onPressed: () {
+                        cart.undoItem(productItem.id);
+                      }),
+                  content: Row(
+                    children: [
+                      Text('Product added to cart'),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Icon(Icons.card_giftcard),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
         ),
         child: InkWell(
           onTap: () {

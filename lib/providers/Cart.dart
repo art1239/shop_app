@@ -25,6 +25,22 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
+  void undoItem(String productId) {
+    if (_cartItems[productId].quantity > 1) {
+      _cartItems.update(
+        productId,
+        (updatedCartItem) => CartItem(
+            id: updatedCartItem.id,
+            title: updatedCartItem.title,
+            price: updatedCartItem.price,
+            quantity: updatedCartItem.quantity - 1),
+      );
+      notifyListeners();
+    } else {
+      removeItem(productId);
+    }
+  }
+
   double get totalPrice {
     double amount = 0;
     return _cartItems.values.fold(
