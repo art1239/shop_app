@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/screens/OrdersScreen.dart';
+import 'package:shop_app/screens/UserManagingProducts_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -26,17 +27,27 @@ class MainDrawer extends StatelessWidget {
             height: 20,
           ),
           MenuItem(
-              title: 'Shop',
-              icon: Icons.shop,
-              selectLink: () {
-                Navigator.of(context).pushReplacementNamed('/');
-              }),
+            title: 'Shop',
+            icon: Icons.shop,
+            selectLink: () {
+              Navigator.of(context).pushReplacementNamed('/');
+            },
+          ),
           MenuItem(
-              title: 'Order',
-              icon: Icons.check_box,
-              selectLink: () {
-                Navigator.of(context).pushReplacementNamed(OrderScreen.path);
-              })
+            title: 'Order',
+            icon: Icons.check_box,
+            selectLink: () {
+              Navigator.of(context).pushReplacementNamed(OrderScreen.path);
+            },
+          ),
+          MenuItem(
+            title: 'Manage',
+            icon: Icons.insert_chart,
+            selectLink: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(UserProductScreen.path);
+            },
+          ),
         ],
       ),
     );
