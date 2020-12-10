@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class SingleItem extends StatelessWidget {
+class ManageProductItem extends StatelessWidget {
   final String title;
   final String imageUrl;
-  SingleItem(this.title, this.imageUrl);
+  ManageProductItem(this.title, this.imageUrl);
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -18,7 +18,7 @@ class SingleItem extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.edit),
               onPressed: () {},
-              color: Colors.blueGrey,
+              color: Colors.lightBlue,
             ),
             IconButton(
               icon: Icon(Icons.delete),
