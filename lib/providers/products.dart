@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/models/MuttableProduct.dart';
 import 'package:shop_app/providers/product.dart';
 
 class Products with ChangeNotifier {
@@ -47,5 +48,21 @@ class Products with ChangeNotifier {
 
   List<Product> get favoriteItems {
     return _items.where((element) => element.isFavorite).toList();
+  }
+
+  void addProducts(Product p) {
+    _items.add(p);
+    notifyListeners();
+  }
+
+  void modifyProduct(Product p, String id) {
+    final index = _items.indexWhere((element) => element.id == id);
+    _items[index] = p;
+    notifyListeners();
+  }
+
+  void removeProduct(String id) {
+    _items.removeWhere((element) => element.id == id);
+    notifyListeners();
   }
 }
