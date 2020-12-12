@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/MuttableProduct.dart';
+
 import 'package:shop_app/providers/product.dart';
+import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
   List<Product> _items = [
@@ -50,9 +53,30 @@ class Products with ChangeNotifier {
     return _items.where((element) => element.isFavorite).toList();
   }
 
-  void addProducts(Product p) {
-    _items.add(p);
-    notifyListeners();
+  Future<void> addProducts(Product p) {
+    const url =
+        'https://shopapp-28279-default-rtdb.firebaseio.com/products.json';
+    return http
+        .post(url,
+            body: json.encode({
+              'title': p.title,
+              'price': p.price,
+              'description': p.description,
+              'imageUrl': p.imageUrl,
+              'isFavorite': p.isFavorite
+            }))
+        .then((response) {
+      final product = Product(
+        title: p.title,
+        id: json.decode(response.body)['name'],
+        imageUrl: p.imageUrl,
+        description: p.description,
+        price: p.price,
+        isFavorite: p.isFavorite,
+      );
+      _items.add(product);
+      notifyListeners();
+    });
   }
 
   void modifyProduct(Product p, String id) {
