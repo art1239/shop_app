@@ -24,10 +24,11 @@ class _AddEditProductState extends State<AddEditProduct> {
     desc: '',
     id: null,
     imageUrl: '',
+    isFavorite: false,
   );
   @override
   void initState() {
-    _imgFocus.addListener(() => _updateListener());
+    _imgFocus.addListener(() => _updateImage());
     super.initState();
   }
 
@@ -55,14 +56,14 @@ class _AddEditProductState extends State<AddEditProduct> {
 
   @override
   void dispose() {
-    _imgFocus.removeListener(_updateListener);
+    _imgFocus.removeListener(_updateImage);
     _imgFocus.dispose();
     _imageUrlController.dispose();
 
     super.dispose();
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     final isValid = _formKey.currentState.validate();
     if (!isValid) {
       return;
@@ -73,38 +74,40 @@ class _AddEditProductState extends State<AddEditProduct> {
       _isLoading = true;
     });
     if (editedProduct.id != null) {
-      Product productToBeUpdated = Product(
-          id: editedProduct.id,
-          title: editedProduct.title,
-          price: editedProduct.price,
-          description: editedProduct.desc,
-          imageUrl: editedProduct.imageUrl,
-          isFavorite: editedProduct.isFavorite);
-
       Provider.of<Products>(context, listen: false)
-          .modifyProduct(productToBeUpdated, productToBeUpdated.id);
+          .modifyProduct(editedProduct, editedProduct.id);
       Navigator.of(context).pop();
     } else {
-      Product productToBeAdded = Product(
-          id: DateTime.now().toString(),
-          title: editedProduct.title,
-          price: editedProduct.price,
-          description: editedProduct.desc,
-          imageUrl: editedProduct.imageUrl,
-          isFavorite: editedProduct.isFavorite);
-
-      Provider.of<Products>(context, listen: false)
-          .addProducts(productToBeAdded)
-          .then((value) {
+      try {
+        await Provider.of<Products>(context, listen: false)
+            .addProducts(editedProduct);
+      } catch (error) {
+        await showDialog<Null>(
+          context: context,
+          builder: (ctx) {
+            return AlertDialog(
+              title: Text('OOPS!!'),
+              content: Text('Something went wrong with your request'),
+              actions: [
+                FlatButton(
+                    child: Text('Go back'),
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    })
+              ],
+            );
+          },
+        );
+      } finally {
         setState(() {
           _isLoading = false;
         });
         Navigator.of(context).pop();
-      });
+      }
     }
   }
 
-  void _updateListener() {
+  void _updateImage() {
     if (!_imgFocus.hasFocus) {
       if (!isImageUrlValid()) {
         return;

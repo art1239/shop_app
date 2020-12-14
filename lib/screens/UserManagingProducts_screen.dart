@@ -7,6 +7,9 @@ import 'package:shop_app/widgets/manageProductItem.dart';
 
 class UserProductScreen extends StatelessWidget {
   static const path = '/manageProducts';
+  Future<void> _refreshPage(BuildContext context) async {
+    await Provider.of<Products>(context).getProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +28,22 @@ class UserProductScreen extends StatelessWidget {
         ],
       ),
       drawer: MainDrawer(),
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        child: ListView.builder(
-            itemBuilder: (context, i) {
-              return Column(
-                children: [
-                  ManageProductItem(
-                      products[i].id, products[i].title, products[i].imageUrl),
-                  Divider()
-                ],
-              );
-            },
-            itemCount: products.length),
+      body: RefreshIndicator(
+        onRefresh: () => _refreshPage(context),
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: ListView.builder(
+              itemBuilder: (context, i) {
+                return Column(
+                  children: [
+                    ManageProductItem(products[i].id, products[i].title,
+                        products[i].imageUrl),
+                    Divider()
+                  ],
+                );
+              },
+              itemCount: products.length),
+        ),
       ),
     );
   }

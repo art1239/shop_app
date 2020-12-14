@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/Cart.dart';
+import 'package:shop_app/providers/products.dart';
 import 'package:shop_app/widgets/badge.dart';
 import 'package:shop_app/widgets/mainDrawer.dart';
 
@@ -18,8 +19,24 @@ class ProductsCatalog extends StatefulWidget {
 
 class _ProductsCatalogState extends State<ProductsCatalog> {
   bool isFavorite = false;
+  var isLoading = false;
+  var response;
+  @override
+  void initState() {
+    isLoading = true;
+
+    Provider.of<Products>(context, listen: false).getProducts().then((_) {
+      setState(() {
+        print('hi');
+        isLoading = false;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('bulidi');
     return Scaffold(
       appBar: AppBar(
         title: Text('Products Catalog'),
@@ -63,7 +80,14 @@ class _ProductsCatalogState extends State<ProductsCatalog> {
         ],
       ),
       drawer: MainDrawer(),
-      body: ProductGrid(isFavorite),
+      body: !isLoading
+          ? ProductGrid(isFavorite)
+          : Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.red,
+                semanticsLabel: 'Loading Products',
+              ),
+            ),
     );
   }
 }

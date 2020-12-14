@@ -4,12 +4,12 @@ class MuttableProduct {
   String desc;
   double price;
   String imageUrl;
-  bool isFavorite = false;
+  bool isFavorite;
   MuttableProduct(
       {this.title,
       this.id,
       this.desc,
       this.price,
       this.imageUrl,
-      this.isFavorite});
+      this.isFavorite = false});
 }

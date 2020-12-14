@@ -30,7 +30,7 @@ class ManageProductItem extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                showDialog(
+                return showDialog(
                     context: context,
                     builder: (ctx) {
                       return AlertDialog(
