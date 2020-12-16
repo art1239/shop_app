@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/models/MuttableProduct.dart';
-import 'package:shop_app/providers/product.dart';
+
 import 'package:shop_app/providers/products.dart';
 
 class AddEditProduct extends StatefulWidget {
@@ -34,23 +34,22 @@ class _AddEditProductState extends State<AddEditProduct> {
 
   @override
   void didChangeDependencies() {
-    // if (isCalledForTheFirstTime) {
-    print('U therrit change dependecies');
-    String id = ModalRoute.of(context).settings.arguments as String;
+    if (isCalledForTheFirstTime) {
+      print('U therrit change dependecies');
+      String id = ModalRoute.of(context).settings.arguments as String;
 
-    if (id != null) {
-      title = 'Edit';
-      final initialProduct = Provider.of<Products>(context).findItemById(id);
-      editedProduct.desc = initialProduct.description;
-      _imageUrlController.text = initialProduct.imageUrl;
-      editedProduct.price = initialProduct.price;
-      editedProduct.title = initialProduct.title;
-      editedProduct.id = initialProduct.id;
-      editedProduct.isFavorite = initialProduct.isFavorite;
+      if (id != null) {
+        title = 'Edit';
+        final initialProduct = Provider.of<Products>(context).findItemById(id);
+        editedProduct.desc = initialProduct.description;
+        _imageUrlController.text = initialProduct.imageUrl;
+        editedProduct.price = initialProduct.price;
+        editedProduct.title = initialProduct.title;
+        editedProduct.id = initialProduct.id;
+        editedProduct.isFavorite = initialProduct.isFavorite;
+      }
     }
-
-    // }
-    // isCalledForTheFirstTime = false;
+    isCalledForTheFirstTime = false;
     super.didChangeDependencies();
   }
 
@@ -68,43 +67,49 @@ class _AddEditProductState extends State<AddEditProduct> {
     if (!isValid) {
       return;
     }
-
     _formKey.currentState.save();
     setState(() {
       _isLoading = true;
     });
+
     if (editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false)
-          .modifyProduct(editedProduct, editedProduct.id);
-      Navigator.of(context).pop();
+      try {
+        await Provider.of<Products>(context, listen: false)
+            .modifyProduct(editedProduct, editedProduct.id);
+      } catch (error) {
+        await errorDialog();
+      }
     } else {
       try {
         await Provider.of<Products>(context, listen: false)
             .addProducts(editedProduct);
       } catch (error) {
-        await showDialog<Null>(
-          context: context,
-          builder: (ctx) {
-            return AlertDialog(
-              title: Text('OOPS!!'),
-              content: Text('Something went wrong with your request'),
-              actions: [
-                FlatButton(
-                    child: Text('Go back'),
-                    onPressed: () {
-                      Navigator.of(ctx).pop();
-                    })
-              ],
-            );
-          },
-        );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
+        await errorDialog();
       }
     }
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
+  }
+
+  Future errorDialog() async {
+    await showDialog<Null>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: Text('OOPS!!'),
+          content: Text('Something went wrong with your request'),
+          actions: [
+            FlatButton(
+                child: Text('Go back'),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                })
+          ],
+        );
+      },
+    );
   }
 
   void _updateImage() {

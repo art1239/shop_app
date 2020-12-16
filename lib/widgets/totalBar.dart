@@ -7,6 +7,7 @@ class TotalBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
+
     return Card(
       margin: const EdgeInsets.all(15),
       child: Padding(
@@ -28,20 +29,22 @@ class TotalBar extends StatelessWidget {
             SizedBox(
               width: 10,
             ),
-            RaisedButton(
-              color: Colors.white,
-              child: Text(
-                'ORDER NOW',
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-              onPressed: () {
-                Provider.of<Orders>(context, listen: false)
-                    .addOrders(cart.totalPrice, cart.cartItems.values.toList());
-                cart.clearCart();
-              },
-            ),
+            cart.cardItemslength > 0
+                ? RaisedButton(
+                    color: Colors.white,
+                    child: Text(
+                      'ORDER NOW',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    onPressed: () {
+                      Provider.of<Orders>(context, listen: false).addOrders(
+                          cart.totalPrice, cart.cartItems.values.toList());
+                      cart.clearCart();
+                    },
+                  )
+                : Container(),
           ],
         ),
       ),

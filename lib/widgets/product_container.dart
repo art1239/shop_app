@@ -19,8 +19,14 @@ class ProductContainer extends StatelessWidget {
               icon: productItem.isFavorite
                   ? Icon(Icons.favorite)
                   : Icon(Icons.favorite_border),
-              onPressed: () {
-                productItem.toggleFavorite();
+              onPressed: () async {
+                productItem.toggleFavorite(productItem).catchError((error) {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(error.toString()),
+                    ),
+                  );
+                });
               },
             ),
           ),
@@ -31,6 +37,7 @@ class ProductContainer extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(Icons.shopping_cart),
             onPressed: () {
+              print('${context.debugDoingBuild} apo jo');
               cart.addItemToCart(
                   productItem.id, productItem.title, productItem.price);
               Scaffold.of(context).hideCurrentSnackBar();

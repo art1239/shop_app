@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shop_app/models/HttpException.dart';
 import 'package:shop_app/models/MuttableProduct.dart';
 
 import 'package:shop_app/providers/product.dart';
@@ -81,7 +82,7 @@ class Products with ChangeNotifier {
     }
   }
 
-  void modifyProduct(MuttableProduct p, String id) async {
+  Future<void> modifyProduct(MuttableProduct p, String id) async {
     final url =
         'https://shopapp-28279-default-rtdb.firebaseio.com/products/$id.json';
 
@@ -103,14 +104,8 @@ class Products with ChangeNotifier {
         isFavorite: p.isFavorite,
       );
       _items[index] = productToBeUpdated;
+      notifyListeners();
     }
-
-    notifyListeners();
-  }
-
-  void removeProduct(String id) {
-    _items.removeWhere((element) => element.id == id);
-    notifyListeners();
   }
 
   Future<void> getProducts() async {
@@ -132,5 +127,24 @@ class Products with ChangeNotifier {
         )
         .toList();
     notifyListeners();
+  }
+
+  Future<void> removeProduct(String id) async {
+    final url =
+        'https://shopapp-28279-default-rtdb.firebaseio.com/products/$id.json';
+    final indexOfDeletedProduct =
+        _items.indexWhere((element) => element.id == id);
+    var temporaryProduct = _items[indexOfDeletedProduct];
+    _items.removeAt(indexOfDeletedProduct);
+    notifyListeners();
+
+    final response = await http.delete(url);
+    if (response.statusCode >= 400) {
+      _items.insert(indexOfDeletedProduct, temporaryProduct);
+      notifyListeners();
+
+      throw HttpException(message: 'Could not connect to the server');
+    }
+    temporaryProduct = null;
   }
 }

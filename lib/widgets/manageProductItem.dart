@@ -5,11 +5,17 @@ import 'package:shop_app/screens/addOrEditProduct_screen.dart';
 
 class ManageProductItem extends StatelessWidget {
   final String id;
+
   final String title;
   final String imageUrl;
   ManageProductItem(this.id, this.title, this.imageUrl);
   @override
   Widget build(BuildContext context) {
+    final scaffoldContext = Scaffold.of(context);
+
+    print('buildi i deletit');
+    //  print(Scaffold.of(context).mounted);
+
     return ListTile(
       title: Text(title),
       leading: CircleAvatar(
@@ -29,8 +35,9 @@ class ManageProductItem extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () {
-                return showDialog(
+              onPressed: () async {
+                final response = await showDialog<bool>(
+                    barrierDismissible: false,
                     context: context,
                     builder: (ctx) {
                       return AlertDialog(
@@ -44,19 +51,22 @@ class ManageProductItem extends StatelessWidget {
                             child: Text('Yes'),
                           ),
                           FlatButton(
-                            onPressed: () {
-                              Navigator.of(ctx).pop(false);
-                            },
-                            child: Text('No'),
-                          ),
+                              child: Text('No'),
+                              onPressed: () {
+                                Navigator.of(ctx).pop(false);
+                              }),
                         ],
                       );
-                    }).then((value) {
-                  if (value) {
-                    Provider.of<Products>(context, listen: false)
-                        .removeProduct(id);
-                  }
-                });
+                    });
+                if (response) {
+                  await Provider.of<Products>(context, listen: false)
+                      .removeProduct(id)
+                      .catchError((_) {
+                    // print(Scaffold.of(context).mounted);
+                    scaffoldContext.showSnackBar(
+                        SnackBar(content: Text('Something went wrong')));
+                  });
+                }
               },
               color: Colors.red,
             ),
