@@ -113,7 +113,9 @@ class Products with ChangeNotifier {
         'https://shopapp-28279-default-rtdb.firebaseio.com/products.json';
     final response = await http.get(url);
     final exctractedData = json.decode(response.body) as Map<String, dynamic>;
-
+    if (exctractedData == null) {
+      return;
+    }
     _items = exctractedData.entries
         .map(
           (product) => Product(

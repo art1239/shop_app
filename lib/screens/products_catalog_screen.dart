@@ -27,7 +27,6 @@ class _ProductsCatalogState extends State<ProductsCatalog> {
 
     Provider.of<Products>(context, listen: false).getProducts().then((_) {
       setState(() {
-        print('hi');
         isLoading = false;
       });
     });
@@ -36,7 +35,6 @@ class _ProductsCatalogState extends State<ProductsCatalog> {
 
   @override
   Widget build(BuildContext context) {
-    print('bulidi');
     return Scaffold(
       appBar: AppBar(
         title: Text('Products Catalog'),

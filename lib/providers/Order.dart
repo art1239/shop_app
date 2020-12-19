@@ -38,7 +38,7 @@ class Orders with ChangeNotifier {
                   'id': cartProduct.id,
                   'price': cartProduct.price,
                   'quantity': cartProduct.quantity,
-                  'title': cartProduct.title
+                  'title': cartProduct.title,
                 },
               )
               .toList(),
@@ -55,6 +55,35 @@ class Orders with ChangeNotifier {
         date: timeStamp,
       ),
     );
+    notifyListeners();
+  }
+
+  Future<void> getOrders() async {
+    final url = 'https://shopapp-28279-default-rtdb.firebaseio.com/orders.json';
+    final response = await http.get(url);
+    final exctractedData = json.decode(response.body) as Map<String, dynamic>;
+    if (exctractedData == null) {
+      return;
+    }
+    _orders = exctractedData.entries
+        .map(
+          (orders) => Order(
+            id: orders.key,
+            date: DateTime.tryParse(orders.value['date']),
+            products: (orders.value['products'] as List<dynamic>)
+                .map(
+                  (product) => CartItem(
+                    id: product['id'],
+                    title: product['title'],
+                    price: product['price'],
+                    quantity: product['quantity'],
+                  ),
+                )
+                .toList(),
+            amount: orders.value['amount'],
+          ),
+        )
+        .toList();
     notifyListeners();
   }
 }
