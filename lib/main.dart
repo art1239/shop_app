@@ -4,10 +4,10 @@ import 'package:shop_app/providers/Cart.dart';
 import 'package:shop_app/screens/OrdersScreen.dart';
 import 'package:shop_app/screens/UserManagingProducts_screen.dart';
 import 'package:shop_app/screens/addOrEditProduct_screen.dart';
+import 'package:shop_app/screens/auth_screen.dart';
 import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/screens/product_detail_screen.dart';
 import './providers/products.dart';
-import 'package:shop_app/screens/products_catalog_screen.dart';
 
 import 'providers/Order.dart';
 
@@ -16,7 +16,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.red,
             accentColor: Colors.grey,
             fontFamily: 'Lato'),
-        home: ProductsCatalog(),
+        home: AuthScreen(),
         routes: {
           ProductDetail.path: (ctx) => ProductDetail(),
           CartScreen.path: (ctx) => CartScreen(),
