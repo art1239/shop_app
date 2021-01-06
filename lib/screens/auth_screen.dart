@@ -30,24 +30,26 @@ class AuthScreen extends StatelessWidget {
           ),
           Container(
             height: deviceHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  // decoration: BoxDecoration(border: Border.all(width: 3)),
-                  alignment: Alignment.center,
-                  height: deviceHeight * 0.25,
-                  child: Text(
-                    'Shopping App',
-                    style: TextStyle(
-                      fontSize: 60,
-                      color: Colors.white,
-                      fontFamily: 'Anton',
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    // decoration: BoxDecoration(border: Border.all(width: 3)),
+                    alignment: Alignment.center,
+                    height: deviceHeight * 0.3,
+                    child: Text(
+                      'Shopping App',
+                      style: TextStyle(
+                        fontSize: 60,
+                        color: Colors.white,
+                        fontFamily: 'Anton',
+                      ),
                     ),
                   ),
-                ),
-                UserForm(deviceWidth, deviceHeight),
-              ],
+                  UserForm(deviceWidth, deviceHeight),
+                ],
+              ),
             ),
           ),
         ],

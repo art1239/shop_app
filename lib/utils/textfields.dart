@@ -9,8 +9,11 @@ class AccountFields extends StatelessWidget {
   final double width;
   final Color cursorColor;
   final bool passwordField;
-  final TextEditingController editingController;
+
+  final String initialValue;
+  final TextEditingController controller;
   AccountFields({
+    this.controller,
     @required this.labelText,
     @required this.onSaved,
     this.validator,
@@ -18,26 +21,32 @@ class AccountFields extends StatelessWidget {
     this.width,
     this.cursorColor: Colors.pink,
     this.passwordField: false,
-    this.editingController,
+    this.initialValue,
   });
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SizeConfig().getAccountFeaturesHeight(context, height),
+      // height: SizeConfig().getAccountFeaturesHeight(context, height),
       width: SizeConfig().getAccountFeaturesWidth(context, width),
-      color: Colors.white,
       child: TextFormField(
-        controller: TextEditingController(),
-        style: TextStyle(backgroundColor: Colors.white),
+        controller: controller,
+        initialValue: this.initialValue,
+        validator: this.validator,
         obscureText: passwordField,
         cursorColor: Colors.pink,
-        cursorHeight: 20,
         decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(),
+          // isDense: true,
+          focusedErrorBorder: InputBorder.none,
+
+          // errorBorder: InputBorder.none,
           floatingLabelBehavior: FloatingLabelBehavior.never,
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,
           labelText: labelText,
-          contentPadding: EdgeInsets.only(left: 25),
+          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         ),
       ),
     );
