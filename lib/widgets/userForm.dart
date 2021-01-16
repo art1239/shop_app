@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/auth.dart';
 
 import 'package:shop_app/utils/signInButton.dart';
 import 'package:shop_app/utils/signUpButton.dart';
@@ -20,6 +22,7 @@ enum AccountMode {
 
 class _UserFormState extends State<UserForm> {
   TextEditingController _passwordController = TextEditingController();
+  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   Map<String, String> user = {
     'email': '',
@@ -50,24 +53,23 @@ class _UserFormState extends State<UserForm> {
                 return 'Not a valid Email';
               },
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             AccountFields(
               labelText: 'Password',
               controller: _passwordController,
               onSaved: (value) {
                 user['password'] = value.toString();
               },
-
               validator: (value) {
                 if (value.toString().length < 5) {
                   return 'Password to short';
                 }
                 return null;
               },
-              // passwordField: true,
+              passwordField: true,
             ),
             SizedBox(
-              height: 15,
+              height: 20,
             ),
             mode == AccountMode.SignUp
                 ? AccountFields(
@@ -78,34 +80,37 @@ class _UserFormState extends State<UserForm> {
                             if (value == _passwordController.text) {
                               return null;
                             }
-                            print(value);
-                            print(_passwordController.text);
+
                             return 'Paswords doesnt match';
                           }
                         : null,
-                    // passwordField: true,
+                    passwordField: true,
                   )
                 : SizedBox(),
             SizedBox(height: 30),
             Column(
               children: [
                 mode == AccountMode.LogIn
-                    ? SignInButton(
-                        onTap: () {
-                          validateForm();
-                        },
-                      )
-                    : SignUpButton(
-                        onTap: () {
-                          validateForm();
-                        },
-                      ),
+                    ? !isLoading
+                        ? SignInButton(
+                            onTap: () {
+                              validateForm();
+                            },
+                          )
+                        : CircularProgressIndicator()
+                    : !isLoading
+                        ? SignUpButton(
+                            onTap: () {
+                              validateForm();
+                            },
+                          )
+                        : CircularProgressIndicator(),
                 Container(
                   margin: EdgeInsets.only(top: 15),
                 )
               ],
             ),
-            SizedBox(height: widget.height * 0.10),
+            SizedBox(height: widget.height * 0.07),
             mode == AccountMode.LogIn
                 ? SignUpButton(
                     onTap: () {
@@ -135,11 +140,24 @@ class _UserFormState extends State<UserForm> {
     }
   }
 
-  void validateForm() {
+  Future<void> validateForm() async {
     if (!_formKey.currentState.validate()) {
-      // clearForm();
       return;
     }
     _formKey.currentState.save();
+    setState(() {
+      isLoading = true;
+    });
+
+    if (mode == AccountMode.LogIn) {
+      await Provider.of<Auth>(context, listen: false)
+          .signInUser(user['email'], user['password']);
+    } else {
+      await Provider.of<Auth>(context, listen: false)
+          .signUpUser(user['email'], user['password']);
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
 }

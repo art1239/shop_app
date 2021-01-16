@@ -29,6 +29,7 @@ class AccountFields extends StatelessWidget {
       // height: SizeConfig().getAccountFeaturesHeight(context, height),
       width: SizeConfig().getAccountFeaturesWidth(context, width),
       child: TextFormField(
+        onSaved: this.onSaved,
         controller: controller,
         initialValue: this.initialValue,
         validator: this.validator,
@@ -39,14 +40,14 @@ class AccountFields extends StatelessWidget {
           fillColor: Colors.white,
           border: OutlineInputBorder(),
           // isDense: true,
-          focusedErrorBorder: InputBorder.none,
+          // focusedErrorBorder: InputBorder.none,
 
-          // errorBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
           floatingLabelBehavior: FloatingLabelBehavior.never,
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,
           labelText: labelText,
-          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
         ),
       ),
     );
