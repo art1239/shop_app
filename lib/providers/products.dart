@@ -8,6 +8,8 @@ import 'package:shop_app/providers/product.dart';
 import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
+  final String authToken;
+  Products({this.authToken});
   List<Product> _items = [
     // Product(
     //   id: 'p1',
@@ -84,7 +86,7 @@ class Products with ChangeNotifier {
 
   Future<void> modifyProduct(MuttableProduct p, String id) async {
     final url =
-        'https://shopapp-28279-default-rtdb.firebaseio.com/products/$id.json';
+        'https://shopapp-28279-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken';
 
     final index = _items.indexWhere((element) => element.id == id);
     if (index >= 0) {
@@ -110,7 +112,7 @@ class Products with ChangeNotifier {
 
   Future<void> getProducts() async {
     final url =
-        'https://shopapp-28279-default-rtdb.firebaseio.com/products.json';
+        'https://shopapp-28279-default-rtdb.firebaseio.com/products.json?auth=$authToken';
     final response = await http.get(url);
     final exctractedData = json.decode(response.body) as Map<String, dynamic>;
     if (exctractedData == null) {
@@ -133,7 +135,7 @@ class Products with ChangeNotifier {
 
   Future<void> removeProduct(String id) async {
     final url =
-        'https://shopapp-28279-default-rtdb.firebaseio.com/products/$id.json';
+        'https://shopapp-28279-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken';
     final indexOfDeletedProduct =
         _items.indexWhere((element) => element.id == id);
     var temporaryProduct = _items[indexOfDeletedProduct];

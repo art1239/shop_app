@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/models/HttpException.dart';
 import 'package:shop_app/providers/auth.dart';
-
+import '../utils/exceptionAlertDialog.dart';
 import 'package:shop_app/utils/signInButton.dart';
 import 'package:shop_app/utils/signUpButton.dart';
 import 'package:shop_app/utils/textfields.dart';
@@ -148,13 +149,18 @@ class _UserFormState extends State<UserForm> {
     setState(() {
       isLoading = true;
     });
-
-    if (mode == AccountMode.LogIn) {
-      await Provider.of<Auth>(context, listen: false)
-          .signInUser(user['email'], user['password']);
-    } else {
-      await Provider.of<Auth>(context, listen: false)
-          .signUpUser(user['email'], user['password']);
+    try {
+      if (mode == AccountMode.LogIn) {
+        await Provider.of<Auth>(context, listen: false)
+            .signInUser(user['email'], user['password']);
+      } else {
+        await Provider.of<Auth>(context, listen: false)
+            .signUpUser(user['email'], user['password']);
+      }
+    } on HttpException catch (e) {
+      showExceptionAlertDialog(context, desc: e.manageAuthUser());
+    } catch (e) {
+      showExceptionAlertDialog(context, desc: 'An error occured');
     }
     setState(() {
       isLoading = false;
