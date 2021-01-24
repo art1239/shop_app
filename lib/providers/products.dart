@@ -8,8 +8,10 @@ import 'package:shop_app/providers/product.dart';
 import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
-  final String authToken;
-  Products({this.authToken});
+  String authToken;
+  String userId;
+
+  Products();
   List<Product> _items = [
     // Product(
     //   id: 'p1',
@@ -110,19 +112,30 @@ class Products with ChangeNotifier {
     }
   }
 
+  void update(String authToken, String userId) {
+    this.authToken = authToken;
+    this.userId = userId;
+  }
+
   Future<void> getProducts() async {
-    final url =
+    var url =
         'https://shopapp-28279-default-rtdb.firebaseio.com/products.json?auth=$authToken';
     final response = await http.get(url);
     final exctractedData = json.decode(response.body) as Map<String, dynamic>;
     if (exctractedData == null) {
       return;
     }
+    url =
+        'https://shopapp-28279-default-rtdb.firebaseio.com/favoriteProducts/$userId.json?auth=$authToken';
+    final favoritesResponse = await http.get(url);
+    final favoritesExctractedData = json.decode(favoritesResponse.body);
     _items = exctractedData.entries
         .map(
           (product) => Product(
             id: product.key,
-            isFavorite: product.value['isFavorite'],
+            isFavorite: favoritesExctractedData == null
+                ? false
+                : favoritesExctractedData[product.key] ?? false,
             title: product.value['title'],
             description: product.value['description'],
             price: product.value['price'],

@@ -10,7 +10,7 @@ class ProductContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productItem = Provider.of<Product>(context, listen: false);
-    final authToken = Provider.of<Auth>(context, listen: false).token;
+    final authToken = Provider.of<Auth>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
@@ -24,7 +24,7 @@ class ProductContainer extends StatelessWidget {
                   : Icon(Icons.favorite_border),
               onPressed: () async {
                 productItem
-                    .toggleFavorite(productItem, authToken)
+                    .toggleFavorite(authToken.token, authToken.userId)
                     .catchError((error) {
                   Scaffold.of(context).showSnackBar(
                     SnackBar(

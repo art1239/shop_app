@@ -19,8 +19,9 @@ class Order {
 }
 
 class Orders with ChangeNotifier {
+  String authToken;
   List<Order> _orders = [];
-  final authToken;
+
   Orders({this.authToken});
   List<Order> get allOrders {
     return [..._orders];
@@ -59,6 +60,10 @@ class Orders with ChangeNotifier {
       ),
     );
     notifyListeners();
+  }
+
+  void update(String authToken) {
+    this.authToken = authToken;
   }
 
   Future<void> getOrders() async {

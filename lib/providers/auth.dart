@@ -8,6 +8,9 @@ class Auth with ChangeNotifier {
   String _userId;
   DateTime _expiry;
   String _token;
+  String get userId {
+    return _userId;
+  }
 
   bool get isAuth {
     return token == null ? false : true;
