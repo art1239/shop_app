@@ -94,21 +94,19 @@ class _UserFormState extends State<UserForm> {
                 mode == AccountMode.LogIn
                     ? !isLoading
                         ? SignInButton(
-                            onTap: () {
-                              validateForm();
-                            },
+                            onTap: validateForm,
                           )
                         : CircularProgressIndicator()
                     : !isLoading
                         ? SignUpButton(
-                            onTap: () {
-                              validateForm();
-                            },
+                            onTap: validateForm,
                           )
                         : CircularProgressIndicator(),
                 Container(
-                  margin: EdgeInsets.only(top: 15),
-                )
+                  margin: mode == AccountMode.SignUp
+                      ? EdgeInsets.only(top: widget.height * 0.01)
+                      : EdgeInsets.only(top: widget.height * 0.07),
+                ),
               ],
             ),
             SizedBox(height: widget.height * 0.07),

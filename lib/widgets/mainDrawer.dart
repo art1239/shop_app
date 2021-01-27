@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/screens/OrdersScreen.dart';
 import 'package:shop_app/screens/UserManagingProducts_screen.dart';
 
@@ -15,7 +17,7 @@ class MainDrawer extends StatelessWidget {
             alignment: Alignment.centerLeft,
             color: Theme.of(context).primaryColor,
             child: Text(
-              'Online Shop',
+              'Welcome ',
               style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 30,
@@ -33,6 +35,7 @@ class MainDrawer extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed('/');
             },
           ),
+          Divider(),
           MenuItem(
             title: 'Order',
             icon: Icons.check_box,
@@ -40,6 +43,7 @@ class MainDrawer extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed(OrderScreen.path);
             },
           ),
+          Divider(),
           MenuItem(
             title: 'Manage',
             icon: Icons.insert_chart,
@@ -48,6 +52,16 @@ class MainDrawer extends StatelessWidget {
                   .pushReplacementNamed(UserProductScreen.path);
             },
           ),
+          Divider(),
+          MenuItem(
+            title: 'Log Out',
+            icon: Icons.logout,
+            selectLink: () {
+              Navigator.of(context).pop();
+              Provider.of<Auth>(context, listen: false).logOut();
+            },
+          ),
+          Divider(),
         ],
       ),
     );
@@ -70,6 +84,7 @@ class MenuItem extends StatelessWidget {
       leading: Icon(
         icon,
         size: 26,
+        color: Colors.red,
       ),
       title: Text(
         title,
@@ -77,7 +92,7 @@ class MenuItem extends StatelessWidget {
           fontFamily: 'RobotoCondensed',
           fontSize: 24,
           fontWeight: FontWeight.bold,
-          color: Colors.blueGrey,
+          color: Colors.black54,
         ),
       ),
       onTap: selectLink,

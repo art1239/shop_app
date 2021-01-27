@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ class Auth with ChangeNotifier {
   String _userId;
   DateTime _expiry;
   String _token;
+  Timer _logOutTimer;
   String get userId {
     return _userId;
   }
@@ -63,5 +65,24 @@ class Auth with ChangeNotifier {
 
   Future<void> signInUser(String email, String password) async {
     return _authenticate(email, password, 'signInWithPassword');
+  }
+
+  void logOut() {
+    _userId = null;
+    _token = null;
+    _expiry = null;
+    if (_logOutTimer != null) {
+      _logOutTimer.cancel();
+      _logOutTimer = null;
+    }
+    notifyListeners();
+  }
+
+  void autoLogOut() {
+    if (_logOutTimer != null) {
+      _logOutTimer.cancel();
+    }
+    final timeToLogOut = _expiry.difference(DateTime.now()).inSeconds;
+    _logOutTimer = Timer(Duration(seconds: timeToLogOut), logOut);
   }
 }

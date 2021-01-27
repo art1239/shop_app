@@ -61,7 +61,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProducts(MuttableProduct p) async {
     final url =
-        'https://shopapp-28279-default-rtdb.firebaseio.com/products.json';
+        'https://shopapp-28279-default-rtdb.firebaseio.com/products.json?auth=$authToken';
     try {
       final response = await http.post(url,
           body: json.encode({
@@ -69,7 +69,7 @@ class Products with ChangeNotifier {
             'price': p.price,
             'description': p.desc,
             'imageUrl': p.imageUrl,
-            'isFavorite': p.isFavorite
+            'creatorId': userId,
           }));
 
       final productToBeAdded = Product(
@@ -82,6 +82,7 @@ class Products with ChangeNotifier {
       _items.add(productToBeAdded);
       notifyListeners();
     } catch (error) {
+      print(error.toString());
       throw error;
     }
   }
@@ -117,9 +118,11 @@ class Products with ChangeNotifier {
     this.userId = userId;
   }
 
-  Future<void> getProducts() async {
+  Future<void> getProducts([bool filter = false]) async {
+    String query =
+        filter == true ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     var url =
-        'https://shopapp-28279-default-rtdb.firebaseio.com/products.json?auth=$authToken';
+        'https://shopapp-28279-default-rtdb.firebaseio.com/products.json?auth=$authToken&$query';
     final response = await http.get(url);
     final exctractedData = json.decode(response.body) as Map<String, dynamic>;
     if (exctractedData == null) {
@@ -129,6 +132,7 @@ class Products with ChangeNotifier {
         'https://shopapp-28279-default-rtdb.firebaseio.com/favoriteProducts/$userId.json?auth=$authToken';
     final favoritesResponse = await http.get(url);
     final favoritesExctractedData = json.decode(favoritesResponse.body);
+
     _items = exctractedData.entries
         .map(
           (product) => Product(

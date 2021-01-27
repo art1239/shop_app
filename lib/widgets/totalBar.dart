@@ -23,7 +23,7 @@ class _TotalBarState extends State<TotalBar> {
         child: Row(
           children: [
             Text(
-              !isLoading ? 'Total' : 'Fuck',
+              'Total',
               style: TextStyle(
                 fontSize: 20,
               ),
