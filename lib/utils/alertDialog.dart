@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 Future<bool> showAlertDialog(
   BuildContext context, {
-  @required String title,
-  @required String content,
-  @required String defaultOptionText,
+  String title,
+  String content,
+  String defaultOptionText,
   String optionalText,
 }) {
   return showDialog(

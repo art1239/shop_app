@@ -65,15 +65,18 @@ class _ProductsCatalogState extends State<ProductsCatalog> {
             ),
           ),
           Consumer<Cart>(
-            builder: (_, value, ch) {
+            builder: (ctx, value, ch) {
               return Badge(ch, value.cardItemslength.toString());
             },
-            child: IconButton(
-              icon: Icon(Icons.shopping_cart),
-              onPressed: () {
-                Navigator.pushNamed(context, '/cart');
-              },
-            ),
+            child: Builder(builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.shopping_cart),
+                onPressed: () {
+                  Scaffold.of(context).hideCurrentSnackBar();
+                  Navigator.pushNamed(context, '/cart');
+                },
+              );
+            }),
           ),
         ],
       ),
